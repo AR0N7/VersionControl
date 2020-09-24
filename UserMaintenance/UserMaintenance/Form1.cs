@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UserMaintenance.Entities;
 
 namespace UserMaintenance
 {
@@ -14,17 +16,54 @@ namespace UserMaintenance
     {
         BindingList<User> users = new BindingList<User>();
 
+        public string FullName { get; private set; }
+
         public Form1()
         {
             InitializeComponent();
             label1.Text = Resource.FullName;
             //label2.Text = Resource.FirstName;
             button1.Text = Resource.Add;
+            button2.Text = Resource.B2;
 
             listBox1.DataSource = users;
             listBox1.ValueMember = "ID";
             listBox1.DisplayMember = "FullName";
 
+          
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog();
+
+            save.FileName = ".txt";
+
+            save.Filter = "Text File | *.txt";
+
+            if (save.ShowDialog() == DialogResult.OK)
+
+            {
+
+                StreamWriter writer = new StreamWriter(save.OpenFile());
+
+                for (int i = 0; i < listBox1.Items.Count; i++)
+
+                {
+
+                    writer.WriteLine(listBox1.Items[i].ToString());
+
+                }
+
+                writer.Dispose();
+
+                writer.Close();
+
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
             var u = new User();
             {
                 FullName = textBox1.Text;
