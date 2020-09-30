@@ -75,6 +75,30 @@ namespace Projekt04
              GetCell(2, 1),
              GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
 
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+
+            Excel.Range fullRange = xlSheet.get_Range(GetCell(2, 1), GetCell(lastRowID, headers.Length));
+            fullRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            Excel.Range elsooszlop = xlSheet.get_Range(GetCell(2, 1), GetCell(lastRowID, 1));
+            elsooszlop.Font.Bold = true;
+            elsooszlop.Interior.Color = Color.LightYellow;
+
+            Excel.Range utolsooszlop = xlSheet.get_Range(GetCell(2, headers.Length), GetCell(lastRowID, headers.Length));
+            utolsooszlop.Interior.Color = Color.LightGreen;
+            utolsooszlop.Value = Math.Round(utolsooszlop.Value);
+
+
+
         }
 
         private string GetCell(int x, int y)
