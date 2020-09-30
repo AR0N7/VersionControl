@@ -95,7 +95,7 @@ namespace Projekt04
 
             Excel.Range utolsooszlop = xlSheet.get_Range(GetCell(2, headers.Length), GetCell(lastRowID, headers.Length));
             utolsooszlop.Interior.Color = Color.LightGreen;
-            utolsooszlop.Value = Math.Round(utolsooszlop.Value);
+            utolsooszlop.NumberFormat = "0.00";
 
 
 
