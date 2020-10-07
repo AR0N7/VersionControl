@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace VaR
     {
         PortfolioEntities context = new PortfolioEntities();
         List<Tick> Ticks;
-
+        List<decimal> Nyereségek = new List<decimal>();
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
 
         public Form1()
@@ -25,7 +26,7 @@ namespace VaR
             dataGridView1.DataSource = Ticks;
             CreatePortfolio();
 
-            List<decimal> Nyereségek = new List<decimal>();
+            
             int intervalum = 30;
             DateTime kezdőDátum = (from x in Ticks select x.TradingDay).Min();
             DateTime záróDátum = new DateTime(2016, 12, 30);
@@ -69,5 +70,49 @@ namespace VaR
             return value;
         }
 
+            
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //SaveFileDialog save = new SaveFileDialog();
+
+            //save.FileName = ".txt";
+
+            //save.Filter = "Text File | *.txt";
+
+            //if (save.ShowDialog() == DialogResult.OK)
+
+            //{
+                
+                //using (StreamWriter sw = new StreamWriter(save.FileName, false, Encoding.UTF8))
+                //{
+                    var nyereségekRendezve = (from x in Nyereségek
+                                              orderby x
+                                              select x)
+                                        .ToList();
+
+                    int i = 0;
+
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.DefaultExt = "txt";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        Stream FileST = sfd.OpenFile();
+                        StreamWriter sw = new StreamWriter(FileST);
+
+                        sw.WriteLine("Időszak, Nyereség");
+                        foreach (var x in nyereségekRendezve)
+                        {
+                       
+                            sw.WriteLine(i+"; "+x);
+                            i++;
+                        }
+
+                         sw.Close();
+                         FileST.Close();
+
+                    }
+        }
+    
     }
 }
