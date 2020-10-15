@@ -17,12 +17,12 @@ namespace week6
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        RichTextBox rtb = new RichTextBox();
 
         public Form1()
         {
             InitializeComponent();
-            dataGridView1.DataSource = Rates;
-
+            dataGridView1.DataSource = Rates;          
             RefreshData();
         }
         private void RefreshData()
@@ -47,12 +47,14 @@ namespace week6
             };
             var response = mnbService.GetExchangeRates(request);
             var result = response.GetExchangeRatesResult;
+
+            rtb.Text = result;
         }
 
         public void xmlFeldolgozas()
         {
             var xml = new XmlDocument();
-            xml.LoadXml(result);
+            xml.LoadXml(rtb.Text.ToString());
 
             foreach (XmlElement element in xml.DocumentElement)
             {
