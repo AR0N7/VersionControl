@@ -18,11 +18,16 @@ namespace week6
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
         RichTextBox rtb = new RichTextBox();
+        RichTextBox rtb2 = new RichTextBox();
+        BindingList<RateData> Currencies = new BindingList<RateData>();
+        
 
         public Form1()
         {
             InitializeComponent();
             dataGridView1.DataSource = Rates;          
+            GetCurrencies();
+            comboBox1.DataSource = Currencies;
             RefreshData();
         }
         private void RefreshData()
@@ -35,13 +40,39 @@ namespace week6
 
         }
 
+        private void GetCurrencies()
+        {
+            var mnbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody();
+            var response = mnbService.GetCurrencies(request);
+            var result = response.GetCurrenciesResult;
+            
+            var xml = new XmlDocument();
+            xml.LoadXml(result.ToString());
 
-        public void GetExchangeRates()
+            foreach (XmlElement element in xml.DocumentElement)
+            {
+                var curr = new RateData();
+                Currencies.Add(curr);
+
+                var childElement = (XmlElement)element.ChildNodes[0];
+
+                if (childElement == null)
+                    continue;
+                curr.Currency = childElement.GetAttribute("curr");
+
+            }
+
+            rtb2.Text = Currencies.ToString();
+        }
+
+
+        private void GetExchangeRates()
         {
             var mnbService = new MNBArfolyamServiceSoapClient();
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = comboBox1.SelectedItem.ToString(),
+                currencyNames = comboBox1.Items.ToString(),
                 startDate = dateTimePicker1.Value.ToString(),
                 endDate = dateTimePicker2.Value.ToString()
             };
@@ -51,7 +82,7 @@ namespace week6
             rtb.Text = result;
         }
 
-        public void xmlFeldolgozas()
+        private void xmlFeldolgozas()
         {
             var xml = new XmlDocument();
             xml.LoadXml(rtb.Text.ToString());
@@ -64,6 +95,8 @@ namespace week6
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
                 rate.Currency = childElement.GetAttribute("curr");
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
@@ -74,7 +107,7 @@ namespace week6
 
         }
 
-        public void diagram()
+        private void diagram()
         {
             chartRateData.DataSource = Rates;
 
