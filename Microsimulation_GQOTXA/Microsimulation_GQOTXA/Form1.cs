@@ -30,11 +30,11 @@ namespace Microsimulation_GQOTXA
 
         private void Simulation()
         {
-            for (int year = 2005; year <= int.Parse(textBox1.Text); year++)
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
             {
                 for (int i = 0; i < Population.Count; i++)
                 {
-                    SimStep(year, );
+                    SimStep(year, Population[i]);
                 }
                 int nbrOfMales = (from x in Population
                                   where x.Gender == Gender.Male && x.IsAlive
@@ -42,8 +42,13 @@ namespace Microsimulation_GQOTXA
                 int nbrOfFemales = (from x in Population
                                     where x.Gender == Gender.Female && x.IsAlive
                                     select x).Count();
-                Console.WriteLine(
-                    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                //Console.WriteLine(
+                //    string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+
+                //List<Person> ferfi = new List<Person>(nbrOfMales);
+                //List<Person> no = new List<Person>(nbrOfFemales);
+
+                DisplayResults(year, nbrOfMales, nbrOfFemales);
             }
         }
 
@@ -142,7 +147,11 @@ namespace Microsimulation_GQOTXA
 
         private void Start_Click(object sender, EventArgs e)
         {
+            richTextBox1.Clear();
+            
+
             Simulation();
+            
         }
 
         private void Browse_Click(object sender, EventArgs e)
@@ -155,6 +164,12 @@ namespace Microsimulation_GQOTXA
 
                 textBox2.Text = path;
             }
+        }
+
+        private void DisplayResults(int year, int nbrOfMales, int nbrOfFemales)
+        {
+            richTextBox1.Text = year.ToString();
+                
         }
     }
 }
