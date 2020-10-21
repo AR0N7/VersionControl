@@ -26,12 +26,15 @@ namespace Microsimulation_GQOTXA
             Population = GetPopulation(@"C:\Temp\nép.csv");
             BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
+        }
 
-            for (int year = 2005; year <= 2024; year++)
+        private void Simulation()
+        {
+            for (int year = 2005; year <= int.Parse(textBox1.Text); year++)
             {
                 for (int i = 0; i < Population.Count; i++)
                 {
-                    SimStep();
+                    SimStep(year, );
                 }
                 int nbrOfMales = (from x in Population
                                   where x.Gender == Gender.Male && x.IsAlive
@@ -135,6 +138,23 @@ namespace Microsimulation_GQOTXA
             }
 
             return death;
+        }
+
+        private void Start_Click(object sender, EventArgs e)
+        {
+            Simulation();
+        }
+
+        private void Browse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog o = new OpenFileDialog();
+            if (o.ShowDialog() == DialogResult.OK)
+            {
+                string filename = o.FileName;
+                string path = Path.GetDirectoryName(filename);
+
+                textBox2.Text = path;
+            }
         }
     }
 }
