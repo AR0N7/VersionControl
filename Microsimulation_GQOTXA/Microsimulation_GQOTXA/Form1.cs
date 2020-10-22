@@ -168,7 +168,7 @@ namespace Microsimulation_GQOTXA
 
         private void DisplayResults(int year, int nbrOfMales, int nbrOfFemales)
         {
-            richTextBox1.Text = year.ToString();
+            richTextBox1.Text = "Szimulációs év: " + year.ToString() + "\n" + "Fiúk: " + nbrOfMales.ToString() + "\n" + "Lányok: " + nbrOfFemales.ToString();
                 
         }
     }
