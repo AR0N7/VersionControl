@@ -67,7 +67,10 @@ namespace week08_GQOTXA
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Factory = new BallFactory();
+            Factory = new BallFactory()
+            {
+                BallColor = button.BackColor
+            };
         }
         private void DisplayNext()
         {
@@ -88,6 +91,37 @@ namespace week08_GQOTXA
             if (colorpicker.ShowDialog() != DialogResult.OK)
                 return;
             button.BackColor = colorpicker.Color;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Factory = new PresentFactory()
+            {
+                BoxColor = button4.BackColor,
+                RibbonColor = button5.BackColor
+            };
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var colorpicker = new ColorDialog();
+
+            colorpicker.Color = button.BackColor;
+            if (colorpicker.ShowDialog() != DialogResult.OK)
+                return;
+            button5.BackColor = colorpicker.Color;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var colorpicker = new ColorDialog();
+
+            colorpicker.Color = button.BackColor;
+            if (colorpicker.ShowDialog() != DialogResult.OK)
+                return;
+            button4.BackColor = colorpicker.Color;
         }
     }
 }
